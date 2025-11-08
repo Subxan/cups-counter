@@ -1,0 +1,16 @@
+[Unit]
+Description=Cups Counter Edge Service
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/cups-counter
+ExecStart=/usr/bin/python3 apps/edge_service.py --config configs/site-default.yaml
+Restart=always
+RestartSec=5
+Environment=PYTHONUNBUFFERED=1
+
+[Install]
+WantedBy=multi-user.target
+

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cups Counter Dashboard</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Cups Counter</h1>
+            <div class="status-indicator" id="status">●</div>
+        </header>
+
+        <main>
+            <div class="stats-panel">
+                <div class="stat-card in">
+                    <div class="stat-label">IN</div>
+                    <div class="stat-value" id="stat-in">0</div>
+                </div>
+                <div class="stat-card out">
+                    <div class="stat-label">OUT</div>
+                    <div class="stat-value" id="stat-out">0</div>
+                </div>
+                <div class="stat-card net">
+                    <div class="stat-label">NET</div>
+                    <div class="stat-value" id="stat-net">0</div>
+                </div>
+                <div class="stat-card fps">
+                    <div class="stat-label">FPS</div>
+                    <div class="stat-value" id="stat-fps">0.0</div>
+                </div>
+            </div>
+
+            <div class="preview-panel">
+                <h2>Live Preview</h2>
+                <div class="preview-container">
+                    <img id="preview-img" src="/live.jpg" alt="Live preview">
+                </div>
+            </div>
+
+            <div class="actions-panel">
+                <button id="export-btn" class="btn-primary">Export Today CSV</button>
+                <div class="sparkline-container">
+                    <canvas id="sparkline" width="400" height="100"></canvas>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>
+

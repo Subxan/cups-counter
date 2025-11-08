@@ -1,0 +1,50 @@
+# Example config for top-down camera view
+camera:
+  source: "picamera2"
+  index: 0
+  width: 1280
+  height: 720
+  fps: 30
+  rotate: 180  # Rotate if camera is mounted upside down
+
+model:
+  hef_path: "./models/yolov8n_coco.hef"
+  class_filter: ["cup"]
+  conf_thresh: 0.35
+  iou_thresh: 0.45
+  max_detections: 50
+  mock_mode: false
+
+tracking:
+  type: "bytetrack"
+  track_thresh: 0.50
+  match_thresh: 0.80
+  min_box_area: 150
+  lost_ttl: 30
+
+counting:
+  line:
+    start: [640, 100]   # Horizontal line across middle
+    end:   [640, 620]
+  direction: "bar_to_counter"
+  hysteresis_px: 6
+  min_visible_frames: 3
+
+storage:
+  sqlite_path: "./data/cups.db"
+  csv_dir: "./data/exports"
+  export_daily_time: "23:59"
+  wal_mode: true
+
+ui:
+  http_port: 8080
+  preview: true
+  draw_overlays: true
+  timezone: "Asia/Baku"
+
+ops:
+  save_debug_video: false
+  debug_dir: "./debug"
+  metrics_port: 9109
+  log_level: "INFO"
+
