@@ -103,6 +103,81 @@ class OpsConfig(BaseModel):
     log_level: Literal["DEBUG", "INFO", "WARNING", "ERROR"] = "INFO"
 
 
+class AutoCalConfig(BaseModel):
+    """Auto-calibration configuration."""
+
+    enabled: bool = True
+    warmup_seconds: int = Field(default=120, ge=10)
+    propose_top_k: int = Field(default=3, ge=1, le=10)
+    auto_apply_if_confident: bool = False
+    min_flow_ratio: float = Field(default=0.6, ge=0.0, le=1.0)
+    save_debug: bool = True
+
+
+class ROIConfig(BaseModel):
+    """ROI (Region of Interest) configuration."""
+
+    enabled: bool = True
+    band_height_px: int = Field(default=140, ge=50)
+    margin_px: int = Field(default=24, ge=0)
+
+
+class DriftConfig(BaseModel):
+    """Drift monitoring configuration."""
+
+    enabled: bool = True
+    ssim_threshold: float = Field(default=0.90, ge=0.0, le=1.0)
+    edge_iou_threshold: float = Field(default=0.70, ge=0.0, le=1.0)
+    brightness_var_min: float = Field(default=6.0, ge=0.0)
+    re_calibrate_on_drift: bool = True
+    min_minutes_between_recal: int = Field(default=60, ge=1)
+
+
+class TunerGridConfig(BaseModel):
+    """Parameter grid for tuning."""
+
+    conf_thresh: List[float] = Field(default=[0.30, 0.35, 0.40])
+    match_thresh: List[float] = Field(default=[0.75, 0.80, 0.85])
+    min_box_area: List[int] = Field(default=[120, 150, 180])
+
+
+class TunerConfig(BaseModel):
+    """Parameter tuning configuration."""
+
+    enabled: bool = True
+    run_time: str = "03:10"  # HH:MM
+    clip_seconds: int = Field(default=90, ge=30)
+    grid: TunerGridConfig = Field(default_factory=TunerGridConfig)
+    optimize_for: Literal["stable_crossings", "min_double_counts"] = "stable_crossings"
+    keep_best_profile: bool = True
+
+    @field_validator("run_time")
+    @classmethod
+    def validate_time(cls, v):
+        """Validate time format HH:MM."""
+        parts = v.split(":")
+        if len(parts) != 2:
+            raise ValueError("run_time must be HH:MM")
+        hour, minute = int(parts[0]), int(parts[1])
+        if not (0 <= hour < 24 and 0 <= minute < 60):
+            raise ValueError("Invalid time")
+        return v
+
+
+class AuditConfig(BaseModel):
+    """Audit/thumbnail configuration."""
+
+    thumbnails_per_day: int = Field(default=50, ge=0)
+    thumb_size: List[int] = Field(default=[128, 128], min_length=2, max_length=2)
+
+
+class POSConfig(BaseModel):
+    """POS reconciliation configuration."""
+
+    recon_enabled: bool = True
+    pos_csv_dir: str = "./data/pos"
+
+
 class AppConfig(BaseModel):
     """Main application configuration."""
 
@@ -113,6 +188,12 @@ class AppConfig(BaseModel):
     storage: StorageConfig = Field(default_factory=StorageConfig)
     ui: UIConfig = Field(default_factory=UIConfig)
     ops: OpsConfig = Field(default_factory=OpsConfig)
+    autocal: AutoCalConfig = Field(default_factory=AutoCalConfig)
+    roi: ROIConfig = Field(default_factory=ROIConfig)
+    drift: DriftConfig = Field(default_factory=DriftConfig)
+    tuner: TunerConfig = Field(default_factory=TunerConfig)
+    audit: AuditConfig = Field(default_factory=AuditConfig)
+    pos: POSConfig = Field(default_factory=POSConfig)
 
     @classmethod
     def from_yaml(cls, path: str | Path) -> "AppConfig":

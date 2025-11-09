@@ -15,19 +15,37 @@ def annotate(
     tracks: list[TrackedDetection],
     line_counter: LineCounter,
     stats: dict,
+    roi_masker=None,
+    drift_metrics: dict = None,
+    auto_applied: bool = False,
 ) -> np.ndarray:
-    """Draw overlays on frame: line, boxes, IDs, OSD.
+    """Draw overlays on frame: line, boxes, IDs, OSD, ROI band, drift indicators.
 
     Args:
         frame: Input frame (BGR)
         tracks: List of TrackedDetection
         line_counter: LineCounter instance
         stats: Dict with keys: in, out, net, fps
+        roi_masker: ROIMasker instance (optional)
+        drift_metrics: Dict with drift metrics (optional)
+        auto_applied: Whether line was auto-applied (optional)
 
     Returns:
         Annotated frame
     """
     annotated = frame.copy()
+
+    # Draw ROI band if enabled
+    if roi_masker and roi_masker.enabled and roi_masker.roi_bbox:
+        _, y_top, _, y_bottom = roi_masker.roi_bbox
+        h, w = frame.shape[:2]
+        # Draw semi-transparent band
+        overlay = annotated.copy()
+        cv2.rectangle(overlay, (0, y_top), (w, y_bottom), (255, 255, 0), -1)
+        cv2.addWeighted(overlay, 0.2, annotated, 0.8, 0, annotated)
+        # Draw band borders
+        cv2.line(annotated, (0, y_top), (w, y_top), (255, 255, 0), 1)
+        cv2.line(annotated, (0, y_bottom), (w, y_bottom), (255, 255, 0), 1)
 
     # Draw counting line
     line_start = line_counter.line_start
@@ -104,6 +122,25 @@ def annotate(
         f"NET: {stats.get('net', 0)}",
         f"FPS: {stats.get('fps', 0):.1f}",
     ]
+
+    # Add drift indicators
+    if drift_metrics:
+        if drift_metrics.get("camera_shifted"):
+            texts.append("DRIFT: Camera")
+        if drift_metrics.get("lighting_bad"):
+            texts.append("DRIFT: Lighting")
+
+    # Add auto-applied badge
+    if auto_applied:
+        cv2.putText(
+            annotated,
+            "AUTO",
+            (w - 80, 30),
+            cv2.FONT_HERSHEY_SIMPLEX,
+            0.6,
+            (0, 255, 255),
+            2,
+        )
 
     for i, text in enumerate(texts):
         cv2.putText(

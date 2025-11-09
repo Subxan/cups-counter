@@ -60,8 +60,26 @@ async def root():
 
 @app.get("/healthz")
 async def healthz():
-    """Health check endpoint."""
-    return {"ok": True}
+    """Health check endpoint with detailed status."""
+    if _shared_state is None:
+        return {"ok": False, "reason": "Service not initialized"}
+
+    reasons = []
+    stats = _shared_state.get("stats", {})
+    drift_metrics = _shared_state.get("drift_metrics", {})
+
+    # Check FPS
+    if stats.get("fps", 0) < 10:
+        reasons.append("Low FPS")
+
+    # Check drift
+    if drift_metrics.get("camera_shifted"):
+        reasons.append("Camera drift detected")
+    if drift_metrics.get("lighting_bad"):
+        reasons.append("Lighting issues")
+
+    ok = len(reasons) == 0
+    return {"ok": ok, "reasons": reasons, "fps": stats.get("fps", 0)}
 
 
 @app.websocket("/ws")
@@ -141,6 +159,56 @@ async def get_live_frame():
         iter([buffer.tobytes()]),
         media_type="image/jpeg",
     )
+
+
+@app.get("/autocal/proposals")
+async def get_autocal_proposals():
+    """Get auto-calibration proposals."""
+    if _shared_state is None:
+        return JSONResponse({"error": "Service not initialized"}, status_code=503)
+
+    candidates = _shared_state.get("autocal_candidates", [])
+    return {"candidates": candidates}
+
+
+@app.post("/autocal/apply")
+async def apply_autocal_proposal(index: int = Query(0, ge=0)):
+    """Apply an auto-calibration proposal."""
+    if _shared_state is None:
+        return JSONResponse({"error": "Service not initialized"}, status_code=503)
+
+    candidates = _shared_state.get("autocal_candidates", [])
+    if index >= len(candidates):
+        return JSONResponse({"error": "Invalid proposal index"}, status_code=400)
+
+    # This would trigger a config update in edge_service
+    # For now, just acknowledge
+    _shared_state["autocal_apply_request"] = index
+    return {"status": "applied", "proposal": candidates[index]}
+
+
+@app.get("/drift/status")
+async def get_drift_status():
+    """Get drift monitoring status."""
+    if _shared_state is None:
+        return JSONResponse({"error": "Service not initialized"}, status_code=503)
+
+    drift_metrics = _shared_state.get("drift_metrics", {})
+    return {
+        "ssim": drift_metrics.get("ssim", 1.0),
+        "edge_iou": drift_metrics.get("edge_iou", 1.0),
+        "brightness_var": drift_metrics.get("brightness_var", 0.0),
+        "camera_shifted": drift_metrics.get("camera_shifted", False),
+        "lighting_bad": drift_metrics.get("lighting_bad", False),
+        "last_recal_time": _shared_state.get("last_recal_time"),
+    }
+
+
+@app.get("/admin/audit/thumbnails")
+async def get_audit_thumbnails(day: str | None = Query(None)):
+    """Get audit thumbnails for low-confidence events."""
+    # Placeholder - would query storage for low-confidence events
+    return {"thumbnails": [], "message": "Audit feature placeholder"}
 
 
 # Mount static files

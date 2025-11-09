@@ -164,6 +164,58 @@ function connectWebSocket() {
     }
 }
 
+// Admin panel functions
+async function updateAutocalProposals() {
+    try {
+        const response = await fetch('/autocal/proposals');
+        const data = await response.json();
+        const container = document.getElementById('autocal-proposals');
+        
+        if (!data.candidates || data.candidates.length === 0) {
+            container.innerHTML = '<p>No proposals available</p>';
+            return;
+        }
+
+        container.innerHTML = data.candidates.map((cand, idx) => `
+            <div class="proposal-item">
+                <p>Line: [${cand.start}] -> [${cand.end}]</p>
+                <p>Direction: ${cand.direction}</p>
+                <p>Confidence: ${(cand.confidence * 100).toFixed(1)}%</p>
+                <button onclick="applyProposal(${idx})" class="btn-small">Apply</button>
+            </div>
+        `).join('');
+    } catch (error) {
+        console.error('Error fetching proposals:', error);
+    }
+}
+
+async function applyProposal(index) {
+    try {
+        const response = await fetch(`/autocal/apply?index=${index}`, { method: 'POST' });
+        const data = await response.json();
+        alert('Proposal applied!');
+        updateAutocalProposals();
+    } catch (error) {
+        console.error('Error applying proposal:', error);
+        alert('Failed to apply proposal');
+    }
+}
+
+async function updateDriftStatus() {
+    try {
+        const response = await fetch('/drift/status');
+        const data = await response.json();
+        
+        document.getElementById('drift-ssim').textContent = data.ssim.toFixed(3);
+        document.getElementById('drift-edge-iou').textContent = data.edge_iou.toFixed(3);
+        document.getElementById('drift-brightness').textContent = data.brightness_var.toFixed(1);
+        document.getElementById('drift-camera').textContent = data.camera_shifted ? 'Yes' : 'No';
+        document.getElementById('drift-lighting').textContent = data.lighting_bad ? 'Yes' : 'No';
+    } catch (error) {
+        console.error('Error fetching drift status:', error);
+    }
+}
+
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
     // Update preview every 200ms
@@ -175,6 +227,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Export button
     document.getElementById('export-btn').addEventListener('click', exportCSV);
+
+    // Admin panel toggle
+    const adminToggle = document.getElementById('admin-toggle');
+    const adminPanel = document.getElementById('admin-panel');
+    adminToggle.addEventListener('click', () => {
+        const isVisible = adminPanel.style.display !== 'none';
+        adminPanel.style.display = isVisible ? 'none' : 'block';
+        if (!isVisible) {
+            updateAutocalProposals();
+            updateDriftStatus();
+            setInterval(updateDriftStatus, 5000); // Update drift every 5s
+        }
+    });
 
     // Try WebSocket
     connectWebSocket();

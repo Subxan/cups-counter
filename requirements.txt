@@ -6,8 +6,10 @@ pydantic>=2.0.0
 PyYAML==6.0.1
 prometheus-client==0.19.0
 supervision==0.18.0
-bytetrack==0.1.0
 websockets==12.0
 pytest==7.4.3
 pytest-asyncio==0.21.1
+scikit-image>=0.21.0
+pytz>=2023.3
+picamera2>=0.3.12
 

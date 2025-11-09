@@ -46,6 +46,28 @@
                     <canvas id="sparkline" width="400" height="100"></canvas>
                 </div>
             </div>
+
+            <div class="admin-panel" id="admin-panel" style="display: none;">
+                <h2>Admin Panel</h2>
+                
+                <div class="admin-section">
+                    <h3>Auto-Calibration Proposals</h3>
+                    <div id="autocal-proposals"></div>
+                </div>
+
+                <div class="admin-section">
+                    <h3>Drift Status</h3>
+                    <div id="drift-status">
+                        <p>SSIM: <span id="drift-ssim">-</span></p>
+                        <p>Edge IoU: <span id="drift-edge-iou">-</span></p>
+                        <p>Brightness: <span id="drift-brightness">-</span></p>
+                        <p>Camera Shifted: <span id="drift-camera">-</span></p>
+                        <p>Lighting Bad: <span id="drift-lighting">-</span></p>
+                    </div>
+                </div>
+            </div>
+
+            <button id="admin-toggle" class="btn-secondary">Admin</button>
         </main>
     </div>
 

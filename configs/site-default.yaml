@@ -47,3 +47,43 @@ ops:
   metrics_port: 9109
   log_level: "INFO"
 
+autocal:
+  enabled: true
+  warmup_seconds: 120             # build motion heatmap for 2 minutes
+  propose_top_k: 3                # return best 3 line candidates
+  auto_apply_if_confident: false  # true = apply without asking (use in lab)
+  min_flow_ratio: 0.6             # dominant direction fraction to trust
+  save_debug: true                # write debug heatmap/edges to ./debug
+
+roi:
+  enabled: true
+  band_height_px: 140             # run detection near the line only
+  margin_px: 24
+
+drift:
+  enabled: true
+  ssim_threshold: 0.90            # below -> possible camera nudge
+  edge_iou_threshold: 0.70
+  brightness_var_min: 6.0         # glare/darkness alerts
+  re_calibrate_on_drift: true
+  min_minutes_between_recal: 60
+
+tuner:
+  enabled: true
+  run_time: "03:10"               # daily local time
+  clip_seconds: 90
+  grid:
+    conf_thresh: [0.30, 0.35, 0.40]
+    match_thresh: [0.75, 0.80, 0.85]
+    min_box_area: [120, 150, 180]
+  optimize_for: "stable_crossings"  # or "min_double_counts"
+  keep_best_profile: true
+
+audit:
+  thumbnails_per_day: 50          # lowest-confidence events
+  thumb_size: [128, 128]
+
+pos:
+  recon_enabled: true
+  pos_csv_dir: "./data/pos"
+

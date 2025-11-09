@@ -44,6 +44,19 @@ class Metrics:
         self.active_tracks = Gauge("active_tracks", "Number of active tracks")
         self.dropped_frames = Counter("dropped_frames", "Total dropped frames")
 
+        # Drift metrics
+        self.drift_ssim = Gauge("drift_ssim", "Structural similarity index (drift)")
+        self.edge_iou = Gauge("edge_iou", "Edge map IoU (drift)")
+        self.brightness_var = Gauge("brightness_var", "Brightness variance")
+
+        # ROI metrics
+        self.roi_coverage = Gauge("roi_coverage", "ROI coverage ratio")
+
+        # Auto-calibration metrics
+        self.autocal_runs_total = Counter("autocal_runs_total", "Total auto-calibration runs")
+        self.autocal_applied_total = Counter("autocal_applied_total", "Total auto-applied calibrations")
+        self.recalibrations_total = Counter("recalibrations_total", "Total recalibrations triggered")
+
         self._start_server()
 
     def _start_server(self):
@@ -79,6 +92,34 @@ class Metrics:
     def increment_dropped(self, count: int = 1):
         """Increment dropped frames counter."""
         self.dropped_frames.inc(count)
+
+    def update_drift_ssim(self, value: float):
+        """Update drift SSIM gauge."""
+        self.drift_ssim.set(value)
+
+    def update_edge_iou(self, value: float):
+        """Update edge IoU gauge."""
+        self.edge_iou.set(value)
+
+    def update_brightness_var(self, value: float):
+        """Update brightness variance gauge."""
+        self.brightness_var.set(value)
+
+    def update_roi_coverage(self, value: float):
+        """Update ROI coverage gauge."""
+        self.roi_coverage.set(value)
+
+    def increment_autocal_runs(self, count: int = 1):
+        """Increment auto-calibration runs counter."""
+        self.autocal_runs_total.inc(count)
+
+    def increment_autocal_applied(self, count: int = 1):
+        """Increment auto-applied calibrations counter."""
+        self.autocal_applied_total.inc(count)
+
+    def increment_recalibrations(self, count: int = 1):
+        """Increment recalibrations counter."""
+        self.recalibrations_total.inc(count)
 
     def stop(self):
         """Stop metrics server."""
