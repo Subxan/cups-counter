@@ -103,39 +103,60 @@ class Picamera2Source(FrameSource):
 
 
 class OpenCVSource(FrameSource):
-    """OpenCV (USB) camera source."""
+    """OpenCV (USB) camera or video file source."""
 
-    def __init__(self, index: int, width: int, height: int, fps: int, rotate: int = 0):
+    def __init__(self, index: int | str, width: int, height: int, fps: int, rotate: int = 0):
         super().__init__(width, height, fps, rotate)
         self.index = index
+        self.is_file = isinstance(index, str)
+        
+        # OpenCV can accept either int (camera) or str (file path)
         self.cap = cv2.VideoCapture(index)
         if not self.cap.isOpened():
-            raise RuntimeError(f"Failed to open camera {index}")
+            raise RuntimeError(f"Failed to open {'video file' if self.is_file else 'camera'}: {index}")
 
-        self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, width)
-        self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
-        self.cap.set(cv2.CAP_PROP_FPS, fps)
-
-        logger.info(f"OpenCV camera {index} initialized: {width}x{height} @ {fps}fps")
+        # For video files, get properties from file
+        if self.is_file:
+            actual_fps = self.cap.get(cv2.CAP_PROP_FPS) or fps
+            actual_width = int(self.cap.get(cv2.CAP_PROP_FRAME_WIDTH)) or width
+            actual_height = int(self.cap.get(cv2.CAP_PROP_FRAME_HEIGHT)) or height
+            total_frames = int(self.cap.get(cv2.CAP_PROP_FRAME_COUNT))
+            self.actual_fps = actual_fps
+            logger.info(f"Video file opened: {index}")
+            logger.info(f"Video properties: {actual_width}x{actual_height} @ {actual_fps:.2f}fps, {total_frames} frames")
+        else:
+            # For cameras, set properties
+            self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, width)
+            self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
+            self.cap.set(cv2.CAP_PROP_FPS, fps)
+            self.actual_fps = fps
+            logger.info(f"OpenCV camera {index} initialized: {width}x{height} @ {fps}fps")
 
     def frames(self) -> Generator[Tuple[np.ndarray, int], None, None]:
-        """Yield frames from OpenCV camera."""
-        frame_interval = 1.0 / self.fps
+        """Yield frames from OpenCV camera or video file."""
+        # Use actual FPS from video file if available, otherwise use configured FPS
+        frame_interval = 1.0 / self.actual_fps
         last_frame_time = time.time()
 
         while True:
             ret, frame = self.cap.read()
             if not ret:
-                logger.warning("Failed to read frame from camera")
-                time.sleep(0.1)
-                continue
+                if self.is_file:
+                    # End of video - loop back to start
+                    logger.info("End of video file reached, looping...")
+                    self.cap.set(cv2.CAP_PROP_POS_FRAMES, 0)
+                    continue
+                else:
+                    logger.warning("Failed to read frame from camera")
+                    time.sleep(0.1)
+                    continue
 
             frame = self._rotate_frame(frame)
             timestamp_ns = time.time_ns()
             self._frame_count += 1
             self._last_frame_time = timestamp_ns
 
-            # Throttle to target FPS
+            # Throttle to actual FPS (from video file or configured)
             elapsed = time.time() - last_frame_time
             if elapsed < frame_interval:
                 time.sleep(frame_interval - elapsed)

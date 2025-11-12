@@ -12,7 +12,7 @@ class CameraConfig(BaseModel):
     """Camera configuration."""
 
     source: Literal["picamera2", "gstreamer", "opencv"] = "picamera2"
-    index: int = 0
+    index: int | str = 0  # Can be int (camera index) or str (video file path)
     width: int = 1280
     height: int = 720
     fps: int = 30

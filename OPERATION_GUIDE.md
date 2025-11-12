@@ -91,6 +91,21 @@ camera:
   index: 0               # Usually 0, try 1, 2 if multiple cameras
 ```
 
+**For Video File:**
+```yaml
+camera:
+  source: "opencv"
+  index: "./path/to/video.mp4"  # Path to video file (relative or absolute)
+  width: 1280            # Fallback if video properties can't be read
+  height: 720
+  fps: 30                 # Fallback if video FPS can't be read
+```
+
+**Note:** When using a video file:
+- The video will loop automatically when it reaches the end
+- Video properties (resolution, FPS) are read from the file automatically
+- Use an example config: `python apps/edge_service.py --config configs/video-file.yaml`
+
 **Model Settings (if using mock mode for testing):**
 ```yaml
 model:
@@ -126,6 +141,9 @@ python apps/edge_service.py --mock
 
 # Run with custom config
 python apps/edge_service.py --config configs/camera-topdown.yaml
+
+# Run with video file
+python apps/edge_service.py --config configs/video-file.yaml
 
 # Run headless (no overlay drawing, better performance)
 python apps/edge_service.py --headless
