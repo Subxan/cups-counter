@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>OPERATION_GUIDE</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@5/github-markdown.min.css" />
+</head>
+<body>
+<h1 id="cups-counter---complete-operation-guide">Cups Counter - Complete
+Operation Guide</h1>
+<h2 id="table-of-contents">Table of Contents</h2>
+<ol type="1">
+<li><a href="#initial-setup">Initial Setup</a></li>
+<li><a href="#first-time-configuration">First-Time
+Configuration</a></li>
+<li><a href="#running-the-application">Running the Application</a></li>
+<li><a href="#using-auto-calibration">Using Auto-Calibration</a></li>
+<li><a href="#manual-calibration">Manual Calibration</a></li>
+<li><a href="#web-dashboard">Web Dashboard</a></li>
+<li><a href="#monitoring--maintenance">Monitoring &amp;
+Maintenance</a></li>
+<li><a href="#troubleshooting">Troubleshooting</a></li>
+</ol>
+<hr />
+<h2 id="initial-setup">Initial Setup</h2>
+<h3 id="step-1-install-system-dependencies">Step 1: Install System
+Dependencies</h3>
+<p>On Raspberry Pi 5:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Update system</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt-get update</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt-get upgrade <span class="at">-y</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Install required system packages</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt-get install <span class="at">-y</span> <span class="dt">\</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    python3-pip <span class="dt">\</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    python3-venv <span class="dt">\</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    libcap-dev <span class="dt">\</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    libcamera-dev <span class="dt">\</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    python3-libcamera</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co"># For Hailo (if using Hailo HAT)</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Follow HailoRT installation instructions from Hailo</span></span></code></pre></div>
+<h3 id="step-2-setup-python-environment">Step 2: Setup Python
+Environment</h3>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~/cups-counter</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Create virtual environment</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> setup</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># OR manually:</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> <span class="at">-m</span> venv venv</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> venv/bin/activate</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install <span class="at">--upgrade</span> pip</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install <span class="at">-r</span> requirements.txt</span></code></pre></div>
+<p><strong>Note:</strong> If <code>picamera2</code> installation fails,
+install it system-wide:</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt-get install <span class="at">-y</span> python3-picamera2</span></code></pre></div>
+<h3 id="step-3-prepare-model-file">Step 3: Prepare Model File</h3>
+<p>Place your Hailo-compiled <code>.hef</code> model in the
+<code>models/</code> directory:</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> /path/to/your/model.hef models/yolov8n_coco.hef</span></code></pre></div>
+<p>Or update the path in <code>configs/site-default.yaml</code>:</p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">model</span><span class="kw">:</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">hef_path</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;./models/your_model.hef&quot;</span></span></code></pre></div>
+<hr />
+<h2 id="first-time-configuration">First-Time Configuration</h2>
+<h3 id="step-1-edit-configuration-file">Step 1: Edit Configuration
+File</h3>
+<p>Open <code>configs/site-default.yaml</code> and adjust:</p>
+<p><strong>Camera Settings:</strong></p>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">camera</span><span class="kw">:</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">source</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;picamera2&quot;</span><span class="co">    # Use &quot;opencv&quot; for USB cameras</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">width</span><span class="kw">:</span><span class="at"> </span><span class="dv">1280</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">height</span><span class="kw">:</span><span class="at"> </span><span class="dv">720</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">fps</span><span class="kw">:</span><span class="at"> </span><span class="dv">30</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">rotate</span><span class="kw">:</span><span class="at"> </span><span class="dv">0</span><span class="co">              # 0, 90, 180, or 270 if camera is rotated</span></span></code></pre></div>
+<p><strong>For USB Camera:</strong></p>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">camera</span><span class="kw">:</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">source</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;opencv&quot;</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">index</span><span class="kw">:</span><span class="at"> </span><span class="dv">0</span><span class="co">               # Usually 0, try 1, 2 if multiple cameras</span></span></code></pre></div>
+<p><strong>Model Settings (if using mock mode for testing):</strong></p>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">model</span><span class="kw">:</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">mock_mode</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span><span class="co">        # Set to true to test without Hailo hardware</span></span></code></pre></div>
+<p><strong>Auto-Calibration Settings:</strong></p>
+<div class="sourceCode" id="cb9"><pre
+class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">autocal</span><span class="kw">:</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">enabled</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">warmup_seconds</span><span class="kw">:</span><span class="at"> </span><span class="dv">120</span><span class="co">    # How long to observe before proposing line</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">auto_apply_if_confident</span><span class="kw">:</span><span class="at"> </span><span class="ch">false</span><span class="co">  # Set true to auto-apply best line</span></span></code></pre></div>
+<hr />
+<h2 id="running-the-application">Running the Application</h2>
+<h3 id="option-1-development-mode-interactive">Option 1: Development
+Mode (Interactive)</h3>
+<div class="sourceCode" id="cb10"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Activate virtual environment</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> venv/bin/activate</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Run with default config</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> apps/edge_service.py</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Or use Makefile</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> run</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Run with mock mode (no hardware needed)</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> apps/edge_service.py <span class="at">--mock</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Run with custom config</span></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> apps/edge_service.py <span class="at">--config</span> configs/camera-topdown.yaml</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Run headless (no overlay drawing, better performance)</span></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> apps/edge_service.py <span class="at">--headless</span></span></code></pre></div>
+<h3 id="option-2-production-mode-systemd-service">Option 2: Production
+Mode (Systemd Service)</h3>
+<div class="sourceCode" id="cb11"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Copy service file</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> cp ops/cups-counter.service /etc/systemd/system/</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Edit service file to match your installation path</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> nano /etc/systemd/system/cups-counter.service</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Update WorkingDirectory and ExecStart paths if needed</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Enable and start service</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> systemctl daemon-reload</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> systemctl enable cups-counter</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> systemctl start cups-counter</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Check status</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> systemctl status cups-counter</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a><span class="co"># View logs</span></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> journalctl <span class="at">-u</span> cups-counter <span class="at">-f</span></span></code></pre></div>
+<hr />
+<h2 id="using-auto-calibration">Using Auto-Calibration</h2>
+<h3 id="how-auto-calibration-works">How Auto-Calibration Works</h3>
+<ol type="1">
+<li>On startup, if <code>autocal.enabled: true</code>, the system:
+<ul>
+<li>Collects frames for <code>warmup_seconds</code> (default: 120
+seconds = 2 minutes)</li>
+<li>Builds a motion heatmap from detected cup movements</li>
+<li>Analyzes flow direction (bar → counter or counter → bar)</li>
+<li>Uses Hough line detection to find candidate counting lines</li>
+<li>Scores candidates and returns top 3 proposals</li>
+</ul></li>
+<li>If <code>auto_apply_if_confident: true</code> and confidence &gt;
+70%:
+<ul>
+<li>Automatically applies the best line</li>
+<li>Updates config file</li>
+<li>Starts counting immediately</li>
+</ul></li>
+<li>If <code>auto_apply_if_confident: false</code>:
+<ul>
+<li>Proposals are stored for manual review</li>
+<li>Access via Web UI Admin Panel</li>
+</ul></li>
+</ol>
+<h3 id="using-auto-calibration-1">Using Auto-Calibration</h3>
+<p><strong>Method 1: Automatic (Recommended for
+Lab/Testing)</strong></p>
+<div class="sourceCode" id="cb12"><pre
+class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># In configs/site-default.yaml</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">autocal</span><span class="kw">:</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">enabled</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">auto_apply_if_confident</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span><span class="co">  # Auto-apply best line</span></span></code></pre></div>
+<p><strong>Method 2: Manual Review (Recommended for
+Production)</strong></p>
+<div class="sourceCode" id="cb13"><pre
+class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">autocal</span><span class="kw">:</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">enabled</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">auto_apply_if_confident</span><span class="kw">:</span><span class="at"> </span><span class="ch">false</span><span class="co">  # Review proposals first</span></span></code></pre></div>
+<p>Then: 1. Start the service: <code>python apps/edge_service.py</code>
+2. Wait 2 minutes for warmup 3. Open Web UI:
+<code>http://&lt;pi-ip&gt;:8080</code> 4. Click “Admin” button 5. Review
+proposals in “Auto-Calibration Proposals” section 6. Click “Apply” on
+the best line</p>
+<h3 id="debug-outputs">Debug Outputs</h3>
+<p>If <code>autocal.save_debug: true</code>, check <code>debug/</code>
+directory: - <code>motion_heatmap.png</code> - Shows where cups moved -
+<code>edge_map.png</code> - Edge detection used for line finding</p>
+<hr />
+<h2 id="manual-calibration">Manual Calibration</h2>
+<p>If you prefer to set the line manually:</p>
+<div class="sourceCode" id="cb14"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Activate venv</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> venv/bin/activate</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Run calibration tool</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> apps/calibrate.py</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Or with custom config</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> apps/calibrate.py <span class="at">--config</span> configs/camera-topdown.yaml</span></code></pre></div>
+<p><strong>Steps:</strong> 1. A window opens showing live camera feed 2.
+Click two points to define the counting line - First click: Start point
+- Second click: End point 3. A green line appears connecting the points
+4. System runs a 2-minute test with mock detections 5. Line coordinates
+are saved to config file 6. Screenshot saved to
+<code>debug/calib.png</code></p>
+<p><strong>Tips:</strong> - Place line where cups cross (e.g., bar to
+counter) - Line should be horizontal or near-horizontal - Avoid placing
+too close to image edges - Press ‘q’ to quit early</p>
+<hr />
+<h2 id="web-dashboard">Web Dashboard</h2>
+<h3 id="accessing-the-dashboard">Accessing the Dashboard</h3>
+<ol type="1">
+<li>Start the edge service</li>
+<li>Open browser: <code>http://&lt;raspberry-pi-ip&gt;:8080</code>
+<ul>
+<li>Replace <code>&lt;raspberry-pi-ip&gt;</code> with your Pi’s IP
+address</li>
+<li>Find IP: <code>hostname -I</code> or <code>ip addr</code></li>
+</ul></li>
+</ol>
+<h3 id="dashboard-features">Dashboard Features</h3>
+<p><strong>Main View:</strong> - <strong>Live Preview</strong>: Updates
+every 200ms showing annotated frame - <strong>Counters</strong>: IN,
+OUT, NET counts in large display - <strong>FPS</strong>: Current frames
+per second - <strong>Sparkline</strong>: Net count trend over time -
+<strong>Export Button</strong>: Download today’s CSV</p>
+<p><strong>Admin Panel</strong> (Click “Admin” button): -
+<strong>Auto-Calibration Proposals</strong>: - View proposed lines with
+confidence scores - Click “Apply” to accept a proposal - <strong>Drift
+Status</strong>: - SSIM: Structural similarity (1.0 = perfect, &lt;0.9 =
+drift) - Edge IoU: Edge map overlap - Brightness: Current brightness
+variance - Camera Shifted: Yes/No indicator - Lighting Bad: Yes/No
+indicator</p>
+<h3 id="api-endpoints">API Endpoints</h3>
+<p>You can also access data programmatically:</p>
+<div class="sourceCode" id="cb15"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get current stats</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> http://localhost:8080/stats</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Get health status</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> http://localhost:8080/healthz</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Get drift status</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> http://localhost:8080/drift/status</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Get auto-cal proposals</span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> http://localhost:8080/autocal/proposals</span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Apply proposal #0</span></span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-X</span> POST <span class="st">&quot;http://localhost:8080/autocal/apply?index=0&quot;</span></span></code></pre></div>
+<h3 id="prometheus-metrics">Prometheus Metrics</h3>
+<p>Metrics available at:
+<code>http://&lt;pi-ip&gt;:9109/metrics</code></p>
+<p>Key metrics: - <code>cups_in_total</code> - Total cups counted in -
+<code>cups_out_total</code> - Total cups counted out - <code>fps</code>
+- Current FPS - <code>drift_ssim</code> - Drift SSIM value -
+<code>autocal_runs_total</code> - Number of auto-calibration runs -
+<code>recalibrations_total</code> - Number of drift-triggered
+recalibrations</p>
+<hr />
+<h2 id="monitoring-maintenance">Monitoring &amp; Maintenance</h2>
+<h3 id="daily-operations">Daily Operations</h3>
+<p><strong>Check Service Status:</strong></p>
+<div class="sourceCode" id="cb16"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># If using systemd</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> systemctl status cups-counter</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Check logs</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> journalctl <span class="at">-u</span> cups-counter <span class="at">-n</span> 100</span></code></pre></div>
+<p><strong>View Logs:</strong></p>
+<div class="sourceCode" id="cb17"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Application log file</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span> <span class="at">-f</span> cups-counter.log</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Systemd logs</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> journalctl <span class="at">-u</span> cups-counter <span class="at">-f</span></span></code></pre></div>
+<p><strong>Check Database:</strong></p>
+<div class="sourceCode" id="cb18"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="ex">sqlite3</span> data/cups.db <span class="st">&quot;SELECT COUNT(*) FROM cup_events WHERE DATE(ts_utc) = DATE(&#39;now&#39;);&quot;</span></span></code></pre></div>
+<h3 id="csv-exports">CSV Exports</h3>
+<p>CSV files are automatically exported daily at the time specified in
+config:</p>
+<div class="sourceCode" id="cb19"><pre
+class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">storage</span><span class="kw">:</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">export_daily_time</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;23:59&quot;</span><span class="co">  # Exports at 11:59 PM</span></span></code></pre></div>
+<p>Files saved to: <code>data/exports/YYYY-MM-DD_counts.csv</code></p>
+<p><strong>Manual Export:</strong></p>
+<div class="sourceCode" id="cb20"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Run nightly jobs manually</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> apps/nightly_jobs.py</span></code></pre></div>
+<h3 id="parameter-tuning">Parameter Tuning</h3>
+<p>The system automatically tunes parameters nightly (default: 3:10
+AM):</p>
+<ol type="1">
+<li>Records a 90-second clip</li>
+<li>Tests all parameter combinations from grid</li>
+<li>Scores each combination</li>
+<li>Saves best profile to override file</li>
+</ol>
+<p><strong>View Tuning Results:</strong> - Check logs for tuning results
+- Best parameters saved to config override (if
+<code>keep_best_profile: true</code>)</p>
+<p><strong>Manual Tuning:</strong></p>
+<div class="sourceCode" id="cb21"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Process a video file</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> apps/backfill_replay.py video.mp4 <span class="at">--output</span> results.csv</span></code></pre></div>
+<h3 id="drift-monitoring">Drift Monitoring</h3>
+<p>The system continuously monitors: - <strong>Camera Shift</strong>:
+Detects if camera moved (SSIM &lt; 0.90) - <strong>Lighting
+Changes</strong>: Detects glare/darkness (brightness variance)</p>
+<p><strong>When Drift is Detected:</strong> - If
+<code>drift.re_calibrate_on_drift: true</code>: - Auto-calibration runs
+automatically - New line is applied - Reference frame is updated -
+Cooldown period prevents rapid re-calibration</p>
+<p><strong>Check Drift Status:</strong> - Web UI Admin Panel → Drift
+Status section - API:
+<code>curl http://localhost:8080/drift/status</code> - Metrics:
+<code>drift_ssim</code>, <code>edge_iou</code>,
+<code>brightness_var</code> gauges</p>
+<hr />
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="camera-not-found">Camera Not Found</h3>
+<p><strong>Symptoms:</strong> Error “Failed to open camera” or
+“picamera2 not installed”</p>
+<p><strong>Solutions:</strong></p>
+<div class="sourceCode" id="cb22"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Test camera</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="ex">libcamera-hello</span> <span class="at">--list-cameras</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="co"># For USB camera, try different index</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Edit config: camera.index: 1 or 2</span></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Check permissions</span></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> usermod <span class="at">-a</span> <span class="at">-G</span> video <span class="va">$USER</span></span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Log out and back in</span></span></code></pre></div>
+<h3 id="low-fps">Low FPS</h3>
+<p><strong>Symptoms:</strong> FPS &lt; 15, choppy video</p>
+<p><strong>Solutions:</strong> 1. Reduce resolution in config:
+<code>yaml    camera:      width: 640      height: 480</code></p>
+<ol start="2" type="1">
+<li><p>Disable overlays:</p>
+<div class="sourceCode" id="cb23"><pre
+class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ui</span><span class="kw">:</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">draw_overlays</span><span class="kw">:</span><span class="at"> </span><span class="ch">false</span></span></code></pre></div></li>
+<li><p>Or run headless:</p>
+<div class="sourceCode" id="cb24"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> apps/edge_service.py <span class="at">--headless</span></span></code></pre></div></li>
+<li><p>Check CPU temperature:</p>
+<div class="sourceCode" id="cb25"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="ex">vcgencmd</span> measure_temp</span></code></pre></div></li>
+</ol>
+<h3 id="auto-calibration-not-working">Auto-Calibration Not Working</h3>
+<p><strong>Symptoms:</strong> No proposals generated, or proposals seem
+wrong</p>
+<p><strong>Solutions:</strong> 1. Ensure cups are moving during warmup
+period 2. Check debug outputs in <code>debug/</code> directory 3.
+Increase warmup time:
+<code>yaml    autocal:      warmup_seconds: 180  # 3 minutes</code> 4.
+Verify camera view shows the counting area clearly</p>
+<h3 id="drift-false-positives">Drift False Positives</h3>
+<p><strong>Symptoms:</strong> System recalibrating too often</p>
+<p><strong>Solutions:</strong> 1. Adjust thresholds:
+<code>yaml    drift:      ssim_threshold: 0.85  # Lower = less sensitive      min_minutes_between_recal: 120  # Longer cooldown</code></p>
+<ol start="2" type="1">
+<li><p>Disable auto-recalibration:</p>
+<div class="sourceCode" id="cb26"><pre
+class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">drift</span><span class="kw">:</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">re_calibrate_on_drift</span><span class="kw">:</span><span class="at"> </span><span class="ch">false</span></span></code></pre></div></li>
+</ol>
+<h3 id="web-ui-not-accessible">Web UI Not Accessible</h3>
+<p><strong>Symptoms:</strong> Can’t connect to
+<code>http://&lt;ip&gt;:8080</code></p>
+<p><strong>Solutions:</strong> 1. Check service is running:
+<code>bash    ps aux | grep edge_service</code></p>
+<ol start="2" type="1">
+<li><p>Check firewall:</p>
+<div class="sourceCode" id="cb27"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> ufw allow 8080</span></code></pre></div></li>
+<li><p>Verify IP address:</p>
+<div class="sourceCode" id="cb28"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hostname</span> <span class="at">-I</span></span></code></pre></div></li>
+<li><p>Check if port is in use:</p>
+<div class="sourceCode" id="cb29"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> netstat <span class="at">-tulpn</span> <span class="kw">|</span> <span class="fu">grep</span> 8080</span></code></pre></div></li>
+</ol>
+<h3 id="database-locked-errors">Database Locked Errors</h3>
+<p><strong>Symptoms:</strong> “database is locked” errors</p>
+<p><strong>Solutions:</strong> 1. Ensure WAL mode is enabled:
+<code>yaml    storage:      wal_mode: true</code></p>
+<ol start="2" type="1">
+<li><p>Check disk space:</p>
+<div class="sourceCode" id="cb30"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">df</span> <span class="at">-h</span></span></code></pre></div></li>
+<li><p>Check file permissions:</p>
+<div class="sourceCode" id="cb31"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-la</span> data/cups.db</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> 664 data/cups.db</span></code></pre></div></li>
+</ol>
+<h3 id="mock-mode-testing">Mock Mode Testing</h3>
+<p>To test without hardware:</p>
+<div class="sourceCode" id="cb32"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Set mock mode in config</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="co"># OR use flag</span></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> apps/edge_service.py <span class="at">--mock</span></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Mock mode generates synthetic cup detections</span></span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Perfect for testing the full pipeline</span></span></code></pre></div>
+<hr />
+<h2 id="quick-reference-commands">Quick Reference Commands</h2>
+<div class="sourceCode" id="cb33"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Setup</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> setup</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> venv/bin/activate</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Run</span></span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> run                    <span class="co"># Normal mode</span></span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> apps/edge_service.py <span class="at">--mock</span>  <span class="co"># Mock mode</span></span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> apps/edge_service.py <span class="at">--headless</span>  <span class="co"># No overlays</span></span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Calibration</span></span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> calibrate              <span class="co"># Manual calibration</span></span>
+<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> apps/auto_calibrate.py  <span class="co"># Standalone auto-cal</span></span>
+<span id="cb33-13"><a href="#cb33-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-14"><a href="#cb33-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Testing</span></span>
+<span id="cb33-15"><a href="#cb33-15" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> test                   <span class="co"># Run all tests</span></span>
+<span id="cb33-16"><a href="#cb33-16" aria-hidden="true" tabindex="-1"></a><span class="ex">pytest</span> tests/ <span class="at">-v</span>            <span class="co"># Verbose test output</span></span>
+<span id="cb33-17"><a href="#cb33-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-18"><a href="#cb33-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Maintenance</span></span>
+<span id="cb33-19"><a href="#cb33-19" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> apps/nightly_jobs.py  <span class="co"># Run nightly jobs manually</span></span>
+<span id="cb33-20"><a href="#cb33-20" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> apps/backfill_replay.py video.mp4  <span class="co"># Process video</span></span>
+<span id="cb33-21"><a href="#cb33-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-22"><a href="#cb33-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Service Management</span></span>
+<span id="cb33-23"><a href="#cb33-23" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> systemctl start cups-counter</span>
+<span id="cb33-24"><a href="#cb33-24" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> systemctl stop cups-counter</span>
+<span id="cb33-25"><a href="#cb33-25" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> systemctl restart cups-counter</span>
+<span id="cb33-26"><a href="#cb33-26" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> journalctl <span class="at">-u</span> cups-counter <span class="at">-f</span></span></code></pre></div>
+<hr />
+<h2 id="best-practices">Best Practices</h2>
+<ol type="1">
+<li><strong>First Run:</strong>
+<ul>
+<li>Use manual calibration to set initial line</li>
+<li>Verify counting works correctly</li>
+<li>Then enable auto-calibration for maintenance</li>
+</ul></li>
+<li><strong>Production Deployment:</strong>
+<ul>
+<li>Set <code>autocal.auto_apply_if_confident: false</code> for
+safety</li>
+<li>Review proposals before applying</li>
+<li>Monitor drift status regularly</li>
+</ul></li>
+<li><strong>Performance:</strong>
+<ul>
+<li>Use ROI masking (enabled by default) to improve FPS</li>
+<li>Run headless if you don’t need visual overlays</li>
+<li>Adjust resolution based on your needs</li>
+</ul></li>
+<li><strong>Monitoring:</strong>
+<ul>
+<li>Check <code>/healthz</code> endpoint regularly</li>
+<li>Monitor Prometheus metrics</li>
+<li>Review logs for errors</li>
+</ul></li>
+<li><strong>Backup:</strong>
+<ul>
+<li>Regularly backup <code>data/cups.db</code></li>
+<li>Keep config files in version control</li>
+<li>Export CSVs for external analysis</li>
+</ul></li>
+</ol>
+<hr />
+<h2 id="example-workflow">Example Workflow</h2>
+<p><strong>Day 1 - Initial Setup:</strong></p>
+<div class="sourceCode" id="cb34"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Install dependencies</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> setup</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Configure camera/model paths</span></span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a><span class="fu">nano</span> configs/site-default.yaml</span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. Manual calibration</span></span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> apps/calibrate.py</span>
+<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a><span class="co"># 4. Test run</span></span>
+<span id="cb34-11"><a href="#cb34-11" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> apps/edge_service.py <span class="at">--mock</span></span>
+<span id="cb34-12"><a href="#cb34-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-13"><a href="#cb34-13" aria-hidden="true" tabindex="-1"></a><span class="co"># 5. Verify web UI works</span></span>
+<span id="cb34-14"><a href="#cb34-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Open http://localhost:8080</span></span></code></pre></div>
+<p><strong>Day 2 - Production:</strong></p>
+<div class="sourceCode" id="cb35"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Enable auto-calibration (manual review)</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Edit config: autocal.auto_apply_if_confident: false</span></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Start as service</span></span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> systemctl start cups-counter</span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. Monitor via web UI</span></span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Check Admin panel for proposals</span></span>
+<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a><span class="co"># 4. Apply best proposal when ready</span></span></code></pre></div>
+<p><strong>Ongoing:</strong> - Check web dashboard daily - Review drift
+status weekly - Export CSVs for reconciliation - Monitor logs for
+errors</p>
+<hr />
+<p>This guide covers the main operations. The system is designed to be
+self-managing with auto-calibration and drift monitoring, but manual
+oversight is recommended for production use.</p>
+</body>
+</html>
